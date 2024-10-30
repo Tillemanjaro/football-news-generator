@@ -20,6 +20,7 @@ const char* password = "";
 #define TFT_CS 15
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
+// TODO Fix url to pull rss json
 const String url = "https://v2.jokeapi.dev/joke/Programming";
 
 String getJoke() {
@@ -28,6 +29,9 @@ String getJoke() {
   http.begin(url);
   http.GET();
   String result = http.getString();
+
+  // parse result into json -> data
+
 
   DynamicJsonDocument doc(2048);
   DeserializationError error = deserializeJson(doc, result);
@@ -39,6 +43,11 @@ String getJoke() {
     return "<error>";
   }
 
+  // Read posts = data["items"]
+ 
+  // Loop over each post, and write to the output
+  // tft.setTextColor(ILI9341_GREEN);
+  // tft.println(joke);
   String type = doc["type"].as<String>();
   String joke = doc["joke"].as<String>();
   String setup = doc["setup"].as<String>();
